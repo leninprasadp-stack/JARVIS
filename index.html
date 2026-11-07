@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071426">
+  <meta name="description" content="Your personal JARVIS assistant">
+  <title>JARVIS</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="orb"></span><div><h1>JARVIS</h1><p>PERSONAL AI SYSTEM</p></div></div>
+      <button id="logoutBtn" class="ghost hidden">Log out</button>
+    </header>
+
+    <section id="authPanel" class="panel auth-panel">
+      <p class="eyebrow">SECURE ACCESS</p>
+      <h2>Welcome back.</h2>
+      <p class="muted">Sign in to access your JARVIS account from your other devices.</p>
+      <label>Email address<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"></label>
+      <div class="button-row">
+        <button id="signInBtn">Sign in</button>
+        <button id="signUpBtn" class="secondary">Create account</button>
+      </div>
+      <div class="separator"><span>OR</span></div>
+      <button id="googleBtn" class="google">Continue with Google</button>
+      <p id="authStatus" class="status" aria-live="polite"></p>
+      <p class="tiny">Use the same login on every device. Keep your password private.</p>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <section class="welcome panel">
+        <p class="eyebrow">SYSTEM ONLINE</p>
+        <h2>Good to see you.</h2>
+        <p class="muted">Signed in as <strong id="userEmail"></strong></p>
+        <div class="account-line"><span class="live-dot"></span> Account connected</div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><p class="eyebrow">YOUR ASSISTANT</p><h2 id="assistantTitle">JARVIS</h2></div><span class="chip">Prototype 01</span></div>
+        <label>Assistant name<input id="assistantName" maxlength="24" value="JARVIS"></label>
+        <button id="saveNameBtn" class="secondary">Save assistant name</button>
+        <p id="profileStatus" class="status" aria-live="polite"></p>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">CLOUD MEMORY TEST</p>
+        <h2>Test your sync</h2>
+        <p class="muted">Save a note here, then sign in to the same account on another device to see it.</p>
+        <textarea id="memoryInput" rows="3" placeholder="Example: My preferred assistant name is JARVIS."></textarea>
+        <button id="saveMemoryBtn">Save note to my account</button>
+        <p id="memoryStatus" class="status" aria-live="polite"></p>
+        <div id="memoryList" class="memory-list"></div>
+      </section>
+      <section class="panel note-panel">
+        <p class="eyebrow">NEXT BUILD STAGE</p>
+        <h2>AI brain not connected yet</h2>
+        <p class="muted">This first version sets up your shared account, assistant name and cloud notes. We will add the AI chat and voice features next. No paid API key is included or hidden in this app.</p>
+      </section>
+    </section>
+    <footer>JARVIS • Personal project • Keep your sign-in details secure</footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
