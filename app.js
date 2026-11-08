@@ -1,5 +1,5 @@
 // JARVIS starter: add your Supabase project URL and anon/publishable key below.
-const SUPABASE_URL = "https://ttfjzsvvcmbaplgbfvjk.supabase.co";
+const SUPABASE_URL = "supabase link --project-ref tffjzsvvcmbaplgbfvjk";
 const SUPABASE_ANON_KEY = "sb_publishable_ag6S8qpW5qaq0I8tWcVhhg_EL1j4mDs";
 
 const $ = (id) => document.getElementById(id);
