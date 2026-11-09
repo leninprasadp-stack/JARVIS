@@ -110,3 +110,90 @@ boot();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
 }
+
+/* ===== JARVIS VOICE + LOCAL BRAIN ===== */
+
+const jarvisVoice = {
+  speak(text) {
+    if (!("speechSynthesis" in window)) {
+      console.log("Speech synthesis unavailable");
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-IN";
+    speech.rate = 1;
+    speech.pitch = 0.9;
+
+    window.speechSynthesis.speak(speech);
+  },
+
+  listen(onResult) {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = (event) => {
+      const text = event.results[0][0].transcript;
+      onResult(text);
+    };
+
+    recognition.onerror = (event) => {
+      console.log("Voice error:", event.error);
+    };
+
+    recognition.start();
+  },
+
+  reply(message) {
+    const text = message.toLowerCase().trim();
+    let answer;
+
+    if (text.includes("hello") || text.includes("hi jarvis")) {
+      answer = "Hello. JARVIS systems are online. How may I help?";
+    } 
+    else if (text.includes("your name")) {
+      answer = "I am JARVIS, your personal assistant.";
+    }
+    else if (text.includes("time")) {
+      answer = "The current time is " +
+        new Date().toLocaleTimeString("en-IN");
+    }
+    else if (text.includes("date")) {
+      answer = "Today is " +
+        new Date().toLocaleDateString("en-IN");
+    }
+    else if (text.includes("open youtube")) {
+      answer = "Opening YouTube.";
+      window.open("https://www.youtube.com/", "_blank");
+    }
+    else if (text.includes("open google")) {
+      answer = "Opening Google.";
+      window.open("https://www.google.com/", "_blank");
+    }
+    else if (text.includes("how are you")) {
+      answer = "All systems are functioning normally.";
+    }
+    else {
+      answer = "I heard you say: " + message +
+        ". My advanced AI connection is not enabled yet.";
+    }
+
+    this.speak(answer);
+    return answer;
+  }
+};
+
+/* ===== END JARVIS VOICE + LOCAL BRAIN ===== */
