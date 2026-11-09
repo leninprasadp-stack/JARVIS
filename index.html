@@ -65,5 +65,110 @@
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
+
+<section id="jarvis-chat" style="padding:20px;max-width:600px;margin:auto;background:#101827;color:white;border-radius:16px;">
+  <h2 style="color:#35c8ff;">J.A.R.V.I.S.</h2>
+  <p>Personal Assistant • Online</p>
+
+  <div id="jarvis-messages" style="height:260px;overflow-y:auto;background:#080f1b;padding:12px;border-radius:10px;margin-bottom:12px;">
+    <p>JARVIS: Good to see you. How may I help?</p>
+  </div>
+
+  <div style="display:flex;gap:8px;">
+    <input id="jarvis-input" placeholder="Message JARVIS..."
+      style="flex:1;min-width:0;padding:12px;border-radius:8px;">
+    <button id="jarvis-send">Send</button>
+    <button id="jarvis-mic">🎙️</button>
+  </div>
+</section>
+
+<script>
+(function () {
+  const messages = document.getElementById("jarvis-messages");
+  const input = document.getElementById("jarvis-input");
+  const send = document.getElementById("jarvis-send");
+  const mic = document.getElementById("jarvis-mic");
+
+  if (!messages || !input || !send || !mic) return;
+
+  function addMessage(who, text) {
+    const p = document.createElement("p");
+    p.textContent = who + ": " + text;
+    messages.appendChild(p);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-IN";
+    window.speechSynthesis.speak(speech);
+  }
+
+  function respond(message) {
+    const q = message.toLowerCase();
+    let answer;
+
+    if (q.includes("hello") || q.includes("hi")) {
+      answer = "Hello. JARVIS systems are online.";
+    } else if (q.includes("your name")) {
+      answer = "I am JARVIS, your personal assistant.";
+    } else if (q.includes("time")) {
+      answer = "The time is " + new Date().toLocaleTimeString("en-IN");
+    } else if (q.includes("date")) {
+      answer = "Today is " + new Date().toLocaleDateString("en-IN");
+    } else if (q.includes("open youtube")) {
+      answer = "Opening YouTube.";
+      window.open("https://www.youtube.com/", "_blank");
+    } else if (q.includes("open google")) {
+      answer = "Opening Google.";
+      window.open("https://www.google.com/", "_blank");
+    } else if (q.includes("how are you")) {
+      answer = "All systems are functioning normally.";
+    } else {
+      answer = "I received your message. My advanced AI connection is not enabled yet.";
+    }
+
+    addMessage("JARVIS", answer);
+    speak(answer);
+  }
+
+  function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+    addMessage("You", message);
+    input.value = "";
+    respond(message);
+  }
+
+  send.addEventListener("click", sendMessage);
+
+  input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") sendMessage();
+  });
+
+  mic.addEventListener("click", function() {
+    const Recognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!Recognition) {
+      addMessage("JARVIS", "Voice recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new Recognition();
+    recognition.lang = "en-IN";
+    recognition.onresult = function(event) {
+      input.value = event.results[0][0].transcript;
+      sendMessage();
+    };
+    recognition.onerror = function() {
+      addMessage("JARVIS", "I couldn't hear you. Please try again.");
+    };
+    recognition.start();
+  });
+})();
+</script>
 </body>
 </html>
